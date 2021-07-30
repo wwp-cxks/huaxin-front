@@ -10,9 +10,11 @@ public interface LoginService {
 
     JsonResult doRegister(Login login);
 
-    JsonResult doLogin(Login login, HttpServletRequest request);
+    JsonResult doLogin(Login login);
 
     JsonResult doRegisterByPhone(String phone);
 
-    JsonResult doLoginByPhone(String phone, HttpServletRequest request);
+    JsonResult doLoginByPhone(String phone);
+
+    int getLoginId(Login login);
 }

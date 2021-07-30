@@ -1,21 +1,17 @@
 package com.huaxin.api.service.impl;
 
-import cn.hutool.http.server.HttpServerRequest;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.huaxin.api.mapper.LoginMapper;
 import com.huaxin.api.service.LoginService;
 import com.huaxin.parent.entity.Login;
-import com.huaxin.parent.util.IpAndAddressUtils;
 import com.huaxin.parent.vo.JsonResult;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ObjectUtils;
-import sun.security.util.Password;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -26,6 +22,8 @@ public class LoginServiceImpl implements LoginService {
 
     @Autowired
     private LoginMapper loginMapper;
+    private final String DEFAULT_PWD = "123456"; // 默认初始密码为"123456"
+    private final Integer DEFAULT_STATUS = 1; // 普通用户
 
     /**
      * 使用用户名、密码注册
@@ -39,7 +37,7 @@ public class LoginServiceImpl implements LoginService {
         wrapper.eq("login_name",userName);
         List<Login> list = loginMapper.selectList(wrapper);
 
-        if(CollectionUtils.isEmpty(list)) { // 判断集合是否为空
+        if(CollectionUtils.isEmpty(list)) { // 判断集合是否为空,不为空，则该用户已存在
 
             String password = login.getLoginPwd();
             String salt = UUID.randomUUID().toString();
@@ -48,7 +46,7 @@ public class LoginServiceImpl implements LoginService {
 
             login.setLoginSalt(salt)
                     .setLoginPwd(password)
-                    .setLoginStatus(1) // 普通用户
+                    .setLoginStatus(DEFAULT_STATUS) // 普通用户
                     .setRegisterTime(new Date()); // 设置注册时间
 
             int row = loginMapper.insert(login);
@@ -74,10 +72,11 @@ public class LoginServiceImpl implements LoginService {
         if(CollectionUtils.isEmpty(list)) {
             Date currentTime = new Date();
             Login login = new Login()
-                    .setLoginStatus(1)
+                    .setLoginStatus(DEFAULT_STATUS)
                     .setLoginPhone(phone)
                     .setRegisterTime(currentTime)
-                    .setRecentTime(currentTime);
+                    .setRecentTime(currentTime)
+                    .setLoginPwd(DEFAULT_PWD); // 电话号码注册统一规定密码为123456
            int row = loginMapper.insert(login);
            if(row == 1)
                return JsonResult.success("注册成功！",login);
@@ -94,32 +93,46 @@ public class LoginServiceImpl implements LoginService {
      * @return
      */
     @Override
-    public JsonResult doLoginByPhone(String phone, HttpServletRequest request) {
+    public JsonResult doLoginByPhone(String phone) {
         QueryWrapper<Login> wrapper = new QueryWrapper<>();
         wrapper.eq("login_phone",phone);
         Login login = loginMapper.selectOne(wrapper);
         if(ObjectUtils.isEmpty(login))
             return JsonResult.fail("验证失败！");
-        String ip = IpAndAddressUtils.getIpAddr(request);
-        log.info("ip 为  " + ip);
-        String address = IpAndAddressUtils.getRealAddressByIP(ip);
-        log.info(login.getLoginName() + "用户在" + address + "，于" + new Date() + " 时登录");
-        return JsonResult.success("欢迎回来！",null);
+
+        Date currentTime = new Date();
+        int row = loginMapper.update(new Login().setRecentTime(currentTime), wrapper); // 更新用户登录时间
+        if (row != 1)
+            log.error("登录时间更新异常！");
+
+        return JsonResult.success("欢迎回来！",login);
+    }
+
+    /**
+     * 获取用户的id信息
+     * @param login
+     * @return
+     */
+    @Override
+    public int getLoginId(Login login) {
+        QueryWrapper<Login> wrapper = new QueryWrapper<>();
+        wrapper.select("login_id")
+                .eq("login_name",login.getLoginName());
+        return loginMapper.selectOne(wrapper).getLoginId();
     }
 
     /**
      * 用户名和密码登录
      * @param login
-     * @param request
      * @return
      */
     @Override
-    public JsonResult doLogin(Login login, HttpServletRequest request) {
+    public JsonResult doLogin(Login login) {
         QueryWrapper<Login> wrapper = new QueryWrapper<>();
         wrapper.eq("login_name",login.getLoginName());
         Login list = loginMapper.selectOne(wrapper);
         if(ObjectUtils.isEmpty(list)) // 说明当前用户不存在
-            return JsonResult.fail("用户名或密码输入错误！1");
+            return JsonResult.fail("用户名或密码输入错误！");
         // 否则
         String password = login.getLoginPwd();
         String salt = list.getLoginSalt();
@@ -128,18 +141,13 @@ public class LoginServiceImpl implements LoginService {
         List<Login> loginList = loginMapper.selectList(wrapper.eq("login_pwd",password));
 
         if(CollectionUtils.isEmpty(loginList)){ // 用户名或密码输入错误
-            return JsonResult.fail("用户名或密码输入错误！2");
+            return JsonResult.fail("用户名或密码输入错误！");
         }
         else {
-            String ip = IpAndAddressUtils.getIpAddr(request);
-            log.info("ip 为 == " + ip);
-            String address = IpAndAddressUtils.getRealAddressByIP(ip);
             Date currentTime = new Date();
             int row = loginMapper.update(new Login().setRecentTime(currentTime), wrapper); // 更新用户登录时间
-            if (row == 1)
-                log.info(login.getLoginName() + "用户在" + address + "，于" + currentTime + " 时登录");
-            else
-                log.error("登录时间更新失败！");
+            if (row != 1)
+                log.error("登录时间更新异常！");
 
             return JsonResult.success("欢迎回来，" + login.getLoginName(),null);
         }

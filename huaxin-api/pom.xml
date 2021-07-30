@@ -18,6 +18,13 @@
     </properties>
     <dependencies>
         <dependency>
+            <groupId>com.huaxin.storage</groupId>
+            <artifactId>huaxin-storage</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.huaxin.parent</groupId>
             <artifactId>huaxin-parent</artifactId>
             <version>0.0.1-SNAPSHOT</version>

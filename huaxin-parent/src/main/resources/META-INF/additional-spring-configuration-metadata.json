@@ -1,8 +1,0 @@
-{
-  "properties": [
-    {
-      "name": "token-validity-in-seconds",
-      "type": "java.lang.String",
-      "description": "Description for token-validity-in-seconds."
-    }
-  ] }

@@ -15,3 +15,28 @@ mybatis-plus:
   mapper-locations: classpath:/xml/*.xml
   configuration:
     map-underscore-to-camel-case: true
+
+# 配置日志信息
+logging:
+#  level:
+#    com.huaxin: debug
+  config: classpath:logback-spring.xml
+
+# JWT
+jwt:
+  header: Authorization
+  # 令牌前缀
+  token-start-with: Bearer
+  # 使用Base64对该令牌进行编码
+  base64-secret: rFFJFDSKAgfdjwfakldsfnjallkdjifgjDSLGAJLDSJFGADSJLFGJADFDKSGSSSjejjrjjefdasfadjlkgdjsalgjeworjwejtgoiwefjpajdgfopjsagjopapjoojpSGIOEWJRPQWERPOJWE
+  # 令牌过期时间 此处单位/毫秒
+  token-validity-in-seconds: 36000000 # 过期时间为一天
+
+# 七牛云
+qiniu:
+  accessKey: -gSI3ZMFv5bDIIgrAASUQEaoxMIWewDcboMKuT8C
+  secretKey: WiD416v854OKa9QKZWsFrsH6F-DpHYlRIiFCaAOh
+  # 对象储存
+  bucket: cxks-wwp # 空间名称
+  zone: huanan # 存储区域
+  domain: qwheo6bex.hn-bkt.clouddn.com # 我的测试访问域名
