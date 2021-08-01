@@ -9,23 +9,21 @@ import lombok.experimental.Accessors;
 import java.util.Date;
 
 /**
- * @author cxks
+ * @Description: TODO(问卷分类)
+ * @Author cxks
+ * @Date 2021/8/1 20:50
  */
 @Data
-@TableName("login")
+@TableName("survey_classify")
 @Accessors(chain = true)
-public class Login {
+public class SurveyClassify {
 
     /**
      * MP:主键自增时 会将主键的数据动态的回显给对象
      */
     @TableId(type = IdType.AUTO)
-    private int loginId;
-    private String loginName;
-    private String loginPwd;
-    private String loginPhone;
-    private String loginSalt;
-    private Date registerTime;
-    private Date recentTime;
-    private Integer loginStatus;
+    private int syTypeId;
+    private String syType;
+    private int syTypeNum;
+    private Date syCreatedTime;
 }

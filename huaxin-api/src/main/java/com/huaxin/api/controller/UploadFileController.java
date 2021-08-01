@@ -13,10 +13,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * @author cxks
+ */
 @RestController
 public class UploadFileController {
-    @Autowired
-    private QiniuService qiniuService;
+    private final QiniuService qiniuService;
+
+    public UploadFileController(QiniuService qiniuService) {
+        this.qiniuService = qiniuService;
+    }
 
     /**
      * 上传文件

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 /**
  * 以静态变量保存Spring ApplicationContext, 可在任何代码任何地方任何时候取出ApplicaitonContext.
  *
+ * @author cxks
  */
 @Service
 @Lazy(false)
@@ -74,7 +75,6 @@ public class SpringContextHolderUtils implements ApplicationContextAware, Dispos
      * 检查ApplicationContext不为空.
      */
     private static void assertContextInjected() {
-//        System.out.println(applicationContext);
         Validate.validState(applicationContext != null, "applicaitonContext属性未注入, 请在applicationContext.xml中定义SpringContextHolder.");
     }
 }

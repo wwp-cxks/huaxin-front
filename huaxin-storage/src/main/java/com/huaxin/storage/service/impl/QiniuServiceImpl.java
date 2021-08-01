@@ -15,17 +15,17 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.InputStream;
 
+/**
+ * @author cxks
+ */
 @Service
 public class QiniuServiceImpl implements QiniuService, InitializingBean {
 
-    @Autowired
-    private UploadManager uploadManager;
+    private final UploadManager uploadManager;
 
-    @Autowired
-    private BucketManager bucketManager;
+    private final BucketManager bucketManager;
 
-    @Autowired
-    private Auth auth;
+    private final Auth auth;
 
     @Value("${qiniu.bucket}")
     private String bucket;
@@ -37,6 +37,12 @@ public class QiniuServiceImpl implements QiniuService, InitializingBean {
      * 定义七牛云上传的相关策略
      */
     private StringMap putPolicy;
+
+    public QiniuServiceImpl(UploadManager uploadManager, BucketManager bucketManager, Auth auth) {
+        this.uploadManager = uploadManager;
+        this.bucketManager = bucketManager;
+        this.auth = auth;
+    }
 
     @Override
     public String uploadFile(File file, String fileName) throws QiniuException {

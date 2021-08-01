@@ -11,6 +11,7 @@ import java.io.IOException;
 
 /**
  * 定义认证失败处理类
+ * @author cxks
  */
 @Slf4j
 @Component

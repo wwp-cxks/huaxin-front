@@ -13,17 +13,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * @author cxks
+ */
 @RestController
 @RequestMapping("/hx/userInfo")
 @UserLoginToken
 public class UserInfoController {
 
-    @Autowired
-    private UserInfoService userInfoService;
+    private final UserInfoService userInfoService;
     private final JwtTokenUtils jwtTokenUtils;
 
-    public UserInfoController(JwtTokenUtils jwtTokenUtils) {
+    public UserInfoController(JwtTokenUtils jwtTokenUtils, UserInfoService userInfoService) {
         this.jwtTokenUtils = jwtTokenUtils;
+        this.userInfoService = userInfoService;
     }
 
     /**
@@ -36,9 +39,11 @@ public class UserInfoController {
     @GetMapping("/getUserInfo")
     public JsonResult getUserInfo(HttpServletRequest request){
         JwtSecurityConfig jwtSecurityConfig = SpringContextHolderUtils.getBean(JwtSecurityConfig.class);
-        String bearerToken = request.getHeader(jwtSecurityConfig.getHeader()); // 获取请求头中的授权信息
+        // 获取请求头中的授权信息
+        String bearerToken = request.getHeader(jwtSecurityConfig.getHeader());
         String token = bearerToken.substring(jwtSecurityConfig.getTokenStartWith().length());
-        int loginId = jwtTokenUtils.getIdFromToken(token); // 获取用户的登录id
+        // 获取用户的登录id
+        int loginId = jwtTokenUtils.getIdFromToken(token);
         return userInfoService.getUserInfo(loginId);
     }
 }

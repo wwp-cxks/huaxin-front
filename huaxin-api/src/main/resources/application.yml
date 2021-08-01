@@ -3,12 +3,19 @@ server:
 
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://47.107.84.60:3306/hxfont?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
     #    url: jdbc:mysql://127.0.0.1:3306/survey?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
-    #    url: jdbc:mysql://121.4.194.98:3306/survey?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
     username: hxfont
     password: root
+  thymeleaf:
+    prefix: classpath:/templates/ # 指定模板所在的目录
+    check-template-location: true # 检查模板路径是否存在
+    cache: false # 是否缓存，开发模式下设置为false，避免改了模板还要重启服务器，线上设置为true，可以提高性能。
+    suffix: .html
+    encoding: UTF-8
+    content-type: text/html # 与Servlet中设置输出对应属性效果一致。
+    mode: HTML
 
 mybatis-plus:
   type-aliases-package: com.huaxin.api.mapper
@@ -40,3 +47,5 @@ qiniu:
   bucket: cxks-wwp # 空间名称
   zone: huanan # 存储区域
   domain: qwheo6bex.hn-bkt.clouddn.com # 我的测试访问域名
+
+

@@ -5,6 +5,9 @@ import com.qiniu.common.QiniuException;
 import java.io.File;
 import java.io.InputStream;
 
+/**
+ * @author cxks
+ */
 public interface QiniuService {
 
     /**
@@ -27,7 +30,6 @@ public interface QiniuService {
 
     /**
      * 删除文件
-     *
      * @param fileName:
      * @return: java.lang.String
      */

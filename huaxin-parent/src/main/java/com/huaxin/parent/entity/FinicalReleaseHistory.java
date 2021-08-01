@@ -1,5 +1,6 @@
 package com.huaxin.parent.entity;
 
+import cn.hutool.db.meta.TableType;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -9,23 +10,24 @@ import lombok.experimental.Accessors;
 import java.util.Date;
 
 /**
- * @author cxks
+ * @Description: TODO(资金发放记录)
+ * @Author cxks
+ * @Date 2021/8/1 20:51
  */
 @Data
-@TableName("login")
+@TableName("finical_release_history")
 @Accessors(chain = true)
-public class Login {
+public class FinicalReleaseHistory {
 
     /**
      * MP:主键自增时 会将主键的数据动态的回显给对象
      */
     @TableId(type = IdType.AUTO)
-    private int loginId;
-    private String loginName;
-    private String loginPwd;
-    private String loginPhone;
-    private String loginSalt;
-    private Date registerTime;
-    private Date recentTime;
-    private Integer loginStatus;
+    private int frId;
+    private String frObject;
+    private String frReason;
+    private int count;
+    private Date frTime;
+    private String frOperator;
+    private int frProgress;
 }

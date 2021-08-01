@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * 需要登录才能进行操作的注解UserLoginToken
+ * @author cxks
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

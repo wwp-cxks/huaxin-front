@@ -19,6 +19,7 @@ import java.io.IOException;
 /**
  * 该类继承OncePerRequestFilter，顾名思义，它能够确保在一次请求中只通过一次filter
  * 该类使用JwtTokenUtils工具类进行token校验
+ * @author cxks
  */
 @Component
 @Slf4j
@@ -33,10 +34,12 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws IOException, ServletException {
         JwtSecurityConfig jwtSecurityConfig = SpringContextHolderUtils.getBean(JwtSecurityConfig.class);
-        String requestRri = httpServletRequest.getRequestURI(); // 获取请求地址
+        // 获取请求地址
+        String requestRri = httpServletRequest.getRequestURI();
         //获取request token
         String token = null;
-        String bearerToken = httpServletRequest.getHeader(jwtSecurityConfig.getHeader()); // 获取请求头中的授权信息
+        // 获取请求头中的授权信息
+        String bearerToken = httpServletRequest.getHeader(jwtSecurityConfig.getHeader());
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(jwtSecurityConfig.getTokenStartWith())) {
             token = bearerToken.substring(jwtSecurityConfig.getTokenStartWith().length());
         }

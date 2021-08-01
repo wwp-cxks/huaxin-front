@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 获取请求的设备信息
+ * @author cxks
  */
 public class GetDeviceInfoUtils {
 

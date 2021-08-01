@@ -5,16 +5,28 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-//通过SysResult对象 实现前后端数据交互的载体
+/**
+ * @author cxks
+ * 通过SysResult对象 实现前后端数据交互的载体
+ */
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class JsonResult {
 
-    private Integer status;     //如果后端服务器运行正常 返回200 否则返回201 表示失败
-    private String msg;         //服务器返回提示
-    private Object data;        //服务器返回业务数据.
+    /**
+     * 如果后端服务器运行正常 返回200 否则返回201 表示失败
+     */
+    private Integer status;
+    /**
+     * 服务器返回提示
+     */
+    private String msg;
+    /**
+     * 服务器返回业务数据.
+     */
+    private Object data;
 
     public static JsonResult fail() {
 

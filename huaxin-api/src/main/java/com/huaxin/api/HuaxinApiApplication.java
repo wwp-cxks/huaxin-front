@@ -9,8 +9,12 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 
+
 @SpringBootApplication
-@MapperScan(value = {"com.huaxin.api.mapper", "com.huaxin.storage"}) // 指定扫描多个包
+/**
+ * 指定扫描多个包
+ */
+@MapperScan(value = {"com.huaxin.api.mapper", "com.huaxin.storage"})
 @EnableCaching
 public class HuaxinApiApplication {
 

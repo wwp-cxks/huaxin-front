@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 /**
  * Spring Security配置类
+ * @author cxks
  */
 
 @Configuration
@@ -87,8 +88,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 放行OPTIONS请求
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                //允许匿名及登录用户访问
-                .antMatchers( "/hx/login/**").permitAll()
+                //允许匿名及登录用户访问、允许用户访问静态页面
+                .antMatchers( "/hx/login/**","/templates/**").permitAll()
                 // 所有请求都需要认证
                 .anyRequest().authenticated();
 

@@ -109,7 +109,7 @@ public class JsonUtils {
     public static <T> Map<String, T> jsonToMap(String jsonString, Class<T> clazz) throws Exception {
         Map<String, Map<String, Object>> map = (Map<String, Map<String, Object>>) objectMapper.readValue(jsonString, new TypeReference<Map<String, T>>() {
         });
-        Map<String, T> result = new HashMap<String, T>();
+        Map<String, T> result = new HashMap<String, T>(16);
         for (Map.Entry<String, Map<String, Object>> entry : map.entrySet()) {
             result.put(entry.getKey(), mapToObj(entry.getValue(), clazz));
         }

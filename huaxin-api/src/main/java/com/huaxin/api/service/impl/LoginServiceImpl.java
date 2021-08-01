@@ -16,14 +16,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * @author cxks
+ */
 @Slf4j
 @Service
 public class LoginServiceImpl implements LoginService {
 
     @Autowired
     private LoginMapper loginMapper;
-    private final String DEFAULT_PWD = "123456"; // 默认初始密码为"123456"
-    private final Integer DEFAULT_STATUS = 1; // 普通用户
+    // 默认初始密码为"123456"
+    private final String DEFAULT_PWD = "123456";
+    // 普通用户
+    private final Integer DEFAULT_STATUS = 1;
 
     /**
      * 使用用户名、密码注册
@@ -37,7 +42,8 @@ public class LoginServiceImpl implements LoginService {
         wrapper.eq("login_name",userName);
         List<Login> list = loginMapper.selectList(wrapper);
 
-        if(CollectionUtils.isEmpty(list)) { // 判断集合是否为空,不为空，则该用户已存在
+        // 判断集合是否为空,不为空，则该用户已存在
+        if(CollectionUtils.isEmpty(list)) {
 
             String password = login.getLoginPwd();
             String salt = UUID.randomUUID().toString();
@@ -46,8 +52,10 @@ public class LoginServiceImpl implements LoginService {
 
             login.setLoginSalt(salt)
                     .setLoginPwd(password)
-                    .setLoginStatus(DEFAULT_STATUS) // 普通用户
-                    .setRegisterTime(new Date()); // 设置注册时间
+                    // 普通用户
+                    .setLoginStatus(DEFAULT_STATUS)
+                    // 设置注册时间
+                    .setRegisterTime(new Date());
 
             int row = loginMapper.insert(login);
             if(row == 1)
@@ -76,12 +84,14 @@ public class LoginServiceImpl implements LoginService {
                     .setLoginPhone(phone)
                     .setRegisterTime(currentTime)
                     .setRecentTime(currentTime)
-                    .setLoginPwd(DEFAULT_PWD); // 电话号码注册统一规定密码为123456
+                    // 电话号码注册统一规定密码为123456
+                    .setLoginPwd(DEFAULT_PWD);
            int row = loginMapper.insert(login);
-           if(row == 1)
+           if(row == 1) {
                return JsonResult.success("注册成功！",login);
-           else
+           } else {
                return JsonResult.fail("注册失败！请稍后重试");
+           }
         }
         // 如果list不为空，则该电话号码已被注册
         return JsonResult.fail("该号码已被注册！");
@@ -101,9 +111,11 @@ public class LoginServiceImpl implements LoginService {
             return JsonResult.fail("验证失败！");
 
         Date currentTime = new Date();
-        int row = loginMapper.update(new Login().setRecentTime(currentTime), wrapper); // 更新用户登录时间
-        if (row != 1)
+        // 更新用户登录时间
+        int row = loginMapper.update(new Login().setRecentTime(currentTime), wrapper);
+        if (row != 1) {
             log.error("登录时间更新异常！");
+        }
 
         return JsonResult.success("欢迎回来！",login);
     }
@@ -131,7 +143,8 @@ public class LoginServiceImpl implements LoginService {
         QueryWrapper<Login> wrapper = new QueryWrapper<>();
         wrapper.eq("login_name",login.getLoginName());
         Login list = loginMapper.selectOne(wrapper);
-        if(ObjectUtils.isEmpty(list)) // 说明当前用户不存在
+        // 说明当前用户不存在
+        if(ObjectUtils.isEmpty(list))
             return JsonResult.fail("用户名或密码输入错误！");
         // 否则
         String password = login.getLoginPwd();
@@ -140,14 +153,17 @@ public class LoginServiceImpl implements LoginService {
         password = simpleHash.toHex();
         List<Login> loginList = loginMapper.selectList(wrapper.eq("login_pwd",password));
 
-        if(CollectionUtils.isEmpty(loginList)){ // 用户名或密码输入错误
+        // 用户名或密码输入错误
+        if(CollectionUtils.isEmpty(loginList)){
             return JsonResult.fail("用户名或密码输入错误！");
         }
         else {
             Date currentTime = new Date();
-            int row = loginMapper.update(new Login().setRecentTime(currentTime), wrapper); // 更新用户登录时间
-            if (row != 1)
+            // 更新用户登录时间
+            int row = loginMapper.update(new Login().setRecentTime(currentTime), wrapper);
+            if (row != 1) {
                 log.error("登录时间更新异常！");
+            }
 
             return JsonResult.success("欢迎回来，" + login.getLoginName(),null);
         }

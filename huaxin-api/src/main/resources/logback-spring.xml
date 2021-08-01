@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false" scan="false">
 
+    <!-- 日志级别从低到高分为TRACE < DEBUG < INFO < WARN < ERROR < FATAL，
+    如果设置为WARN，则低于WARN的信息都不会输出 -->
+
     <!-- 日志文件地址，项目根目录 -->
     <property name="log.path" value="./logs"/>
 
@@ -25,7 +28,9 @@
         <file>${log.path}/debug.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${log.path}/%d{yyyy-MM, aux}/debug.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
-            <maxFileSize>50MB</maxFileSize>
+            <!--每个文件最多100MB-->
+            <maxFileSize>100MB</maxFileSize>
+            <!--日志文件保留天数-->
             <maxHistory>30</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -38,7 +43,7 @@
         <file>${log.path}/error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${log.path}/%d{yyyy-MM}/error.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
-            <maxFileSize>50MB</maxFileSize>
+            <maxFileSize>100MB</maxFileSize>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
         <encoder>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+<input type="text" id="token">
+<button onclick="send()">发送</button>
+<script>
+   function send(){
+       const token = document.getElementById("token").value;
+       $.ajax({
+           type:"get",
+           url:"/hx/userInfo/getUserInfo",
+           //设置发送到服务器的数据类型
+           headers: {
+               'Authorization':"Bearer " + token
+           },
+           //设置请求超时时间30秒
+           timeout:30000,
+           success:function(data){
+               alert("成功！")
+               console.log(data)
+           }
+       });
+   }
+</script>
+</body>
+</html>

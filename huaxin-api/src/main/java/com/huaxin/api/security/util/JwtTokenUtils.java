@@ -17,6 +17,9 @@ import java.security.Key;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author cxks
+ */
 @Slf4j
 @Component
 public class JwtTokenUtils implements InitializingBean {

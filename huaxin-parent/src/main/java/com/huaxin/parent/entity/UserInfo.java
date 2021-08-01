@@ -6,18 +6,44 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+/**
+ * @author cxks
+ */
 @Data
 @TableName("user_info")
 @Accessors(chain = true)
 public class UserInfo {
 
-    @TableId(type = IdType.AUTO) //MP:主键自增时 会将主键的数据动态的回显给对象
+    /**
+     * MP:主键自增时 会将主键的数据动态的回显给对象
+     */
+    @TableId(type = IdType.AUTO)
     private int userId;
     private int loginId;
-    private Integer userGender; // 性别
-    private String userProfilePicture; // 用户头像url
-    private String userRealName; // 用户真实姓名
-    private String userIdentityCard; // 用户身份证
-    private String inviteCode; // 用户邀请码
-    private String userTag; // 用户标签
+    private Integer userGender;
+
+    /**
+     *  用户头像url
+     */
+    private String userProfilePicture;
+
+    /**
+     * 用户真实姓名
+      */
+    private String userRealName;
+
+    /**
+     * 用户身份证
+     */
+    private String userIdentityCard;
+
+    /**
+     * 用户邀请码
+     */
+    private String inviteCode;
+
+    /**
+     * 用户标签
+     */
+    private String userTag;
 }
